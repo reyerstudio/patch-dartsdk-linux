@@ -64,7 +64,10 @@ mv $DART_SDK_BIN/dart $DART_SDK_BIN/dart.bin
 cat << EOF > $DART_SDK_BIN/dart
 #!/bin/bash
 PWD=\$(dirname \$0)
-\$PWD/lib/ld-linux-x86-64.so.2 --library-path \$PWD/lib \$PWD/dart.bin \$*
+\$PWD/lib/ld-linux-x86-64.so.2 --library-path \$PWD/lib \$PWD/dart.bin \$* &
+PID="\$!"
+trap "kill \$PID" SIGTERM SIGINT
+wait
 EOF
 chmod +x $DART_SDK_BIN/dart
 echo
