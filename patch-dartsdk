@@ -75,6 +75,4 @@ rm -f $(basename $DART_SDK_URL)
 tar czf $CDIR/$(basename $DART_SDK_URL) dart-sdk
 
 # Cleaning
-if [ -d $WDIR ] ; then
-  rm -rf $WDIR
-fi
+rm -rf $WDIR
