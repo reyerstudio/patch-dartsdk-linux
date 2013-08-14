@@ -1,0 +1,80 @@
+#!/bin/bash
+
+DART_BUILD="latest"
+DART_SDK_URL="http://commondatastorage.googleapis.com/dart-editor-archive-integration/$DART_BUILD/dartsdk-linux-64.tar.gz"
+
+CDIR=$(pwd)
+WDIR=$(mktemp -d)
+DART_SDK_BIN=$WDIR/dart-sdk/bin
+DART_SDK_LIB=$DART_SDK_BIN/lib
+
+URLS="\
+http://archive.ubuntu.com/ubuntu/pool/main/e/eglibc/libc6_2.15-0ubuntu20.1_amd64.deb \
+http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libgcc1_4.6.3-1ubuntu5_amd64.deb \
+http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libstdc++6_4.6.3-1ubuntu5_amd64.deb \
+"
+
+LIBS="\
+lib/x86_64-linux-gnu/ld-2.15.so \
+lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 \
+lib/x86_64-linux-gnu/libc-2.15.so \
+lib/x86_64-linux-gnu/libc.so.6 \
+lib/x86_64-linux-gnu/libdl-2.15.so \
+lib/x86_64-linux-gnu/libdl.so.2 \
+lib/x86_64-linux-gnu/libgcc_s.so.1 \
+lib/x86_64-linux-gnu/libm-2.15.so \
+lib/x86_64-linux-gnu/libm.so.6 \
+lib/x86_64-linux-gnu/libpthread-2.15.so \
+lib/x86_64-linux-gnu/libpthread.so.0 \
+lib/x86_64-linux-gnu/librt-2.15.so \
+lib/x86_64-linux-gnu/librt.so.1 \
+usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
+usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16 \
+"
+
+cd $WDIR
+
+# Download and extract Dart SDK
+echo "Downloading $DART_SDK_URL"
+curl -s -O -L $DART_SDK_URL
+echo "Extracting $(basename $DART_SDK_URL)"
+tar zxf $(basename $DART_SDK_URL)
+mkdir -p $DART_SDK_LIB
+echo
+
+# Download and extract Ubuntu packages
+for url in $URLS ; do
+  echo "Downloading $url"
+  curl -s -L -O $url
+  echo "Extracting $(basename $url) to $WDIR"
+  ar p $(basename $url) data.tar.gz | tar zx
+  echo
+done
+
+# Copy library from Ubuntu packages to Dart SDK
+for lib in $LIBS ; do
+  echo "Copying $lib"
+  cp -a $lib $DART_SDK_LIB
+  chmod +x $DART_SDK_LIB/$(basename $lib)
+done
+
+# Replace dart executable
+echo "Patching Dart SDK"
+mv $DART_SDK_BIN/dart $DART_SDK_BIN/dart.bin
+cat << EOF > $DART_SDK_BIN/dart
+#!/bin/bash
+PWD=\$(dirname \$0)
+\$PWD/lib/ld-linux-x86-64.so.2 --library-path \$PWD/lib \$PWD/dart.bin \$*
+EOF
+chmod +x $DART_SDK_BIN/dart
+echo
+
+# Tarball patched SDK
+echo "Tarball patched SDK"
+rm -f $(basename $DART_SDK_URL)
+tar czf $CDIR/$(basename $DART_SDK_URL) dart-sdk
+
+# Cleaning
+if [ -d $WDIR ] ; then
+  rm -rf $WDIR
+fi
