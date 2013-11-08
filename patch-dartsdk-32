@@ -3,7 +3,7 @@
 type curl >/dev/null 2>&1 || { echo >&2 "Package curl not installed. Run 'apt-get install curl' and try again. Aborting."; exit 1; }
 
 DART_BUILD="latest"
-DART_SDK_URL="http://commondatastorage.googleapis.com/dart-editor-archive-integration/$DART_BUILD/dartsdk-linux-32.tar.gz"
+DART_SDK_URL="http://commondatastorage.googleapis.com/dart-editor-archive-integration/$DART_BUILD/dartsdk-linux-32.zip"
 
 CDIR=$(pwd)
 WDIR=$(mktemp -d /tmp/patch-dartsdk-linux.XXXXXXXX)
@@ -40,7 +40,7 @@ cd $WDIR
 echo "Downloading $DART_SDK_URL"
 curl -s -O -L $DART_SDK_URL
 echo "Extracting $(basename $DART_SDK_URL)"
-tar zxf $(basename $DART_SDK_URL)
+unzip $(basename $DART_SDK_URL)
 mkdir -p $DART_SDK_LIB
 echo
 
@@ -78,7 +78,7 @@ echo
 # Tarball patched SDK
 echo "Tarball patched SDK"
 rm -f $(basename $DART_SDK_URL)
-tar czf $CDIR/$(basename $DART_SDK_URL) dart-sdk
+zip -r $CDIR/$(basename $DART_SDK_URL) dart-sdk
 
 # Cleaning
 rm -rf $WDIR
