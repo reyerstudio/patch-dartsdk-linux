@@ -3,8 +3,7 @@
 type curl >/dev/null 2>&1 || { echo >&2 "Package curl not installed. Run 'apt-get install curl' and try again. Aborting."; exit 1; }
 
 DART_BUILD="latest"
-DART_SDK_URL="http://commondatastorage.googleapis.com/dart-editor-archive-integration/$DART_BUILD/dartsdk-linux-32.zip"
-
+DART_SDK_URL="http://storage.googleapis.com/dart-archive/channels/stable/release/$DART_BUILD/sdk/dartsdk-linux-ia32-release.zip"
 CDIR=$(pwd)
 WDIR=$(mktemp -d /tmp/patch-dartsdk-linux.XXXXXXXX)
 DART_SDK_BIN=$WDIR/dart-sdk/bin
