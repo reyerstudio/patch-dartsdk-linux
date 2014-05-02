@@ -71,7 +71,12 @@ trap "kill \$PID" SIGTERM SIGINT
 wait %1
 exit \$?
 EOF
+chmod -R a+rX $DART_SDK_BIN
 chmod +x $DART_SDK_BIN/dart
+chmod +x $DART_SDK_BIN/dart2js
+chmod +x $DART_SDK_BIN/dartanalyzer
+chmod +x $DART_SDK_BIN/dartfmt
+chmod +x $DART_SDK_BIN/docgen
 echo
 
 # Tarball patched SDK
