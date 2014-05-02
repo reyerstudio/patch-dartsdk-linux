@@ -6,7 +6,8 @@ DART_BUILD="latest"
 DART_SDK_URL="http://storage.googleapis.com/dart-archive/channels/stable/release/$DART_BUILD/sdk/dartsdk-linux-ia32-release.zip"
 CDIR=$(pwd)
 WDIR=$(mktemp -d /tmp/patch-dartsdk-linux.XXXXXXXX)
-DART_SDK_BIN=$WDIR/dart-sdk/bin
+DART_SDK_DIR=$WDIR/dart-sdk
+DART_SDK_BIN=$DART_SDK_DIR/bin
 DART_SDK_LIB=$DART_SDK_BIN/lib
 
 URLS="\
@@ -71,7 +72,7 @@ trap "kill \$PID" SIGTERM SIGINT
 wait %1
 exit \$?
 EOF
-chmod -R a+rX $DART_SDK_BIN
+chmod -R a+rX $DART_SDK_DIR
 chmod +x $DART_SDK_BIN/dart
 chmod +x $DART_SDK_BIN/dart2js
 chmod +x $DART_SDK_BIN/dartanalyzer
