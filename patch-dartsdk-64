@@ -1,8 +1,10 @@
 #!/bin/bash
 
+set -e
+
 type curl >/dev/null 2>&1 || { echo >&2 "Package curl not installed. Run 'apt-get install curl' and try again. Aborting."; exit 1; }
 
-DART_BUILD="latest"
+DART_BUILD=${1:-"latest"}
 DART_SDK_URL="http://storage.googleapis.com/dart-archive/channels/stable/release/$DART_BUILD/sdk/dartsdk-linux-x64-release.zip"
 CDIR=$(pwd)
 WDIR=$(mktemp -d /tmp/patch-dartsdk-linux.XXXXXXXX)
@@ -10,8 +12,12 @@ DART_SDK_DIR=$WDIR/dart-sdk
 DART_SDK_BIN=$DART_SDK_DIR/bin
 DART_SDK_LIB=$DART_SDK_BIN/lib
 
+# http://packages.ubuntu.com/precise/libc6
+# http://packages.ubuntu.com/precise/libgcc1
+# http://packages.ubuntu.com/precise/libstdc++6
+
 URLS="\
-http://archive.ubuntu.com/ubuntu/pool/main/e/eglibc/libc6_2.15-0ubuntu20.2_amd64.deb \
+http://archive.ubuntu.com/ubuntu/pool/main/e/eglibc/libc6_2.15-0ubuntu10.15_amd64.deb \
 http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libgcc1_4.6.3-1ubuntu5_amd64.deb \
 http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libstdc++6_4.6.3-1ubuntu5_amd64.deb \
 "
@@ -74,10 +80,6 @@ exit \$?
 EOF
 chmod -R a+rX $DART_SDK_DIR
 chmod +x $DART_SDK_BIN/dart
-chmod +x $DART_SDK_BIN/dart2js
-chmod +x $DART_SDK_BIN/dartanalyzer
-chmod +x $DART_SDK_BIN/dartfmt
-chmod +x $DART_SDK_BIN/docgen
 echo
 
 # Tarball patched SDK
