@@ -36,8 +36,8 @@ lib/x86_64-linux-gnu/libpthread-2.15.so \
 lib/x86_64-linux-gnu/libpthread.so.0 \
 lib/x86_64-linux-gnu/librt-2.15.so \
 lib/x86_64-linux-gnu/librt.so.1 \
-usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
 usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.16 \
+usr/lib/x86_64-linux-gnu/libstdc++.so.6 \
 "
 
 cd $WDIR

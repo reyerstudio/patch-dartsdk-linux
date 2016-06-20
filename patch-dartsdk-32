@@ -35,8 +35,8 @@ lib/i386-linux-gnu/libpthread-2.15.so \
 lib/i386-linux-gnu/libpthread.so.0 \
 lib/i386-linux-gnu/librt-2.15.so \
 lib/i386-linux-gnu/librt.so.1 \
-usr/lib/i386-linux-gnu/libstdc++.so.6 \
 usr/lib/i386-linux-gnu/libstdc++.so.6.0.16 \
+usr/lib/i386-linux-gnu/libstdc++.so.6 \
 "
 
 cd $WDIR
