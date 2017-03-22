@@ -17,7 +17,7 @@ DART_SDK_LIB=$DART_SDK_BIN/lib
 # http://packages.ubuntu.com/precise/libstdc++6
 
 URLS="\
-http://archive.ubuntu.com/ubuntu/pool/main/e/eglibc/libc6_2.15-0ubuntu10.15_amd64.deb \
+http://archive.ubuntu.com/ubuntu/pool/main/e/eglibc/libc6_2.15-0ubuntu10.17_amd64.deb \
 http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libgcc1_4.6.3-1ubuntu5_amd64.deb \
 http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-4.6/libstdc++6_4.6.3-1ubuntu5_amd64.deb \
 "
